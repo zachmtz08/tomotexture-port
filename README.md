@@ -12,10 +12,13 @@ TomoTexture was built for Windows. This repo is a thin wrapper that runs the ori
 
 1. **Download** [**TomoTexture-Installer.zip**](https://github.com/zachmtz08/tomotexture-port/releases/latest) from the latest release.
 2. **Double-click the zip** to unzip — you'll get a file named `TomoTexture-Installer.command`.
-3. **Open the file past macOS's security warning** (this app isn't signed by an Apple-registered developer, so macOS blocks it by default):
+3. **Open the file past macOS's security warning.** This is the same one-time hoop macOS makes you jump through for any free app that isn't from an Apple-registered developer (same as BlueStacks, OBS, OpenEmu, Handbrake, etc. on first launch).
+
+   > **⚠ This only happens ONCE per file.** After you let it open this one time, that specific file is approved forever. You will NOT see this warning again when you launch TomoTexture from your Desktop later.
+
+   How to bypass it:
    - **First try:** Right-click (or Control-click) `TomoTexture-Installer.command` → **Open** → if the dialog has an **Open** button, click it. Done.
    - **If there's no Open button** (newer macOS versions only show **Done**): close the dialog, then open **System Settings** → **Privacy & Security** → scroll down to the **Security** section. You'll see *"TomoTexture-Installer.command was blocked to protect your Mac."* Click **Open Anyway**, enter your Mac password if prompted, then double-click the installer again.
-   - You only need to do this once per file.
 4. A Terminal window opens. **Press Enter** when it asks, and follow the prompts. The installer will:
    - Install Xcode Command Line Tools if missing (Apple's installer dialog appears — click Install)
    - Install Homebrew if missing (asks for your Mac password)
