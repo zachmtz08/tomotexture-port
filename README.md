@@ -12,8 +12,10 @@ TomoTexture was built for Windows. This repo is a thin wrapper that runs the ori
 
 1. **Download** [**TomoTexture-Installer.zip**](https://github.com/zachmtz08/tomotexture-port/releases/latest) from the latest release.
 2. **Double-click the zip** to unzip — you'll get a file named `TomoTexture-Installer.command`.
-3. **Right-click** (or Control-click) that file → **Open** → click **Open** in the dialog that appears.
-   - Why right-click? macOS blocks unsigned downloaded files by default. Right-click → Open is the standard way to bypass it. You only need to do this once per file.
+3. **Open the file past macOS's security warning** (this app isn't signed by an Apple-registered developer, so macOS blocks it by default):
+   - **First try:** Right-click (or Control-click) `TomoTexture-Installer.command` → **Open** → if the dialog has an **Open** button, click it. Done.
+   - **If there's no Open button** (newer macOS versions only show **Done**): close the dialog, then open **System Settings** → **Privacy & Security** → scroll down to the **Security** section. You'll see *"TomoTexture-Installer.command was blocked to protect your Mac."* Click **Open Anyway**, enter your Mac password if prompted, then double-click the installer again.
+   - You only need to do this once per file.
 4. A Terminal window opens. **Press Enter** when it asks, and follow the prompts. The installer will:
    - Install Xcode Command Line Tools if missing (Apple's installer dialog appears — click Install)
    - Install Homebrew if missing (asks for your Mac password)
@@ -56,7 +58,11 @@ Any folder where you want backups stored. A safe choice is a folder in `~/Docume
 
 ## Troubleshooting
 
-**"Cannot be opened because it is from an unidentified developer"** — This is macOS Gatekeeper blocking unsigned downloads. Right-click (or Control-click) the file → **Open** → **Open**. One-time per file.
+**"Cannot be opened because Apple cannot check it for malicious software"** (or *"...because it is from an unidentified developer"*) — This is macOS Gatekeeper blocking unsigned downloads. Two ways to bypass:
+1. Right-click (or Control-click) the file → **Open** → **Open**. If no **Open** button appears in the dialog, use option 2.
+2. Open **System Settings** → **Privacy & Security** → scroll to the **Security** section → click **Open Anyway** next to the blocked file message, enter your password if asked, then double-click the file again.
+
+You only need to do this once per file. It does not mean the file is malicious — macOS shows this for any file not signed by a paid Apple-registered developer.
 
 **"Python 3.14 is required" error** — Open Terminal and run `brew install python@3.14`, then re-run the installer.
 
