@@ -11,21 +11,23 @@ All credit for the TomoTexture application itself goes to **Alfonso Mallozzi**. 
   - Install via: `brew install python@3.14`
 - [Ryujinx](https://github.com/Ryujinx/Ryujinx) with Tomodachi Life save data under `~/Library/Application Support/Ryujinx/bis/user/save/...`
 
-## Install (one-liner)
+## Install — the easy way (download & double-click)
 
-Open **Terminal** (Cmd+Space → type "Terminal" → Enter) and paste:
+1. Go to the [**Releases page**](https://github.com/zachmtz08/tomotexture-port/releases/latest) and download **TomoTexture-Installer.zip**.
+2. Double-click the zip to unzip it — you'll get `TomoTexture-Installer.command`.
+3. Double-click `TomoTexture-Installer.command`.
+4. **First time only:** macOS will block it with "cannot be opened because it is from an unidentified developer." To bypass:
+   - **Right-click** (or Control+click) `TomoTexture-Installer.command` → **Open** → click **Open** in the dialog.
+5. A Terminal window opens and walks you through the install. It will auto-install anything missing (Xcode Command Line Tools, Homebrew, Python 3.14), download the app, and put a `TomoTexture.command` shortcut on your Desktop.
+6. When it says "All done!", close the Terminal window and double-click `TomoTexture.command` on your Desktop.
+
+## Install — Terminal one-liner (for developers)
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/zachmtz08/tomotexture-port/main/install.sh)"
 ```
 
-This will:
-1. Clone the repo to `~/tomotexture-port`.
-2. Create a Python 3.14 `.venv` and install `numpy`, `Pillow`, `PyYAML`, `zstandard`.
-3. Download `TomoTexture1.1.exe` from [Alfonso's release page](https://github.com/AlfonsoMallozzi/TomoTexture/releases/tag/release) and extract it.
-4. Drop a `TomoTexture.command` shortcut on your Desktop.
-
-When it finishes, double-click `TomoTexture.command` on your Desktop.
+Same thing as the download-and-double-click path above, just invoked from a Terminal you already have open.
 
 ### Manual install (if you prefer)
 
@@ -34,6 +36,8 @@ git clone https://github.com/zachmtz08/tomotexture-port.git
 cd tomotexture-port
 ./setup.sh
 ```
+
+(Manual install assumes you already have `git`, Homebrew, and Python 3.14.)
 
 ## Launch
 
