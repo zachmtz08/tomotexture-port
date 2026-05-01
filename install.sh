@@ -28,6 +28,7 @@ It may need to install the following on your Mac (skipped if already present):
   1. Xcode Command Line Tools  (Apple, required for git)
   2. Homebrew                  (package manager)
   3. Python 3.14               (required by the app)
+  4. python-tk@3.14            (Tk bindings; the app's UI needs them)
 
 You may be prompted for your password or to click Install in a dialog.
 Press Enter to continue, or close this window to cancel.
@@ -94,6 +95,20 @@ if ! command -v python3.14 >/dev/null 2>&1; then
     ok "Python 3.14 installed"
 else
     ok "Python 3.14 already installed"
+fi
+
+# --- Step 3b: Tk bindings for Python 3.14 -----------------------------------
+# Homebrew's python@3.14 does NOT bundle _tkinter; the app's UI imports it and
+# crashes on launch with "ModuleNotFoundError: No module named '_tkinter'"
+# unless python-tk@3.14 is installed alongside it.
+
+if ! python3.14 -c "import _tkinter" >/dev/null 2>&1; then
+    banner "Installing Tk bindings (python-tk@3.14)"
+    brew install python-tk@3.14
+    python3.14 -c "import _tkinter" >/dev/null 2>&1 || die "python-tk@3.14 installed but Python still can't import _tkinter. Try: brew reinstall python-tk@3.14"
+    ok "Tk bindings installed"
+else
+    ok "Tk bindings already available"
 fi
 
 # --- Step 4: Clone / pull the repo ------------------------------------------

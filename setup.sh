@@ -19,9 +19,29 @@ if ! command -v python3.14 >/dev/null 2>&1; then
     exit 1
 fi
 
+# A pre-existing .venv missing its python binary is broken (e.g. previous
+# setup run aborted mid-creation). Wipe it so we recreate from scratch.
+if [ -d ".venv" ] && [ ! -x ".venv/bin/python" ]; then
+    echo "Removing incomplete .venv..."
+    rm -rf .venv
+fi
+
 if [ ! -d ".venv" ]; then
     echo "Creating .venv with Python 3.14..."
-    python3.14 -m venv .venv
+    # Some Homebrew python@3.14 builds ship a broken ensurepip; fall back to
+    # creating the venv without pip and bootstrapping via get-pip.py.
+    if ! python3.14 -m venv .venv 2>/tmp/tomotexture-venv.err; then
+        echo "Standard venv creation failed; retrying without pip..."
+        rm -rf .venv
+        python3.14 -m venv --without-pip .venv
+    fi
+fi
+
+if [ ! -x ".venv/bin/pip" ]; then
+    echo "Bootstrapping pip via get-pip.py..."
+    curl -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/tomotexture-get-pip.py
+    .venv/bin/python /tmp/tomotexture-get-pip.py --quiet
+    rm -f /tmp/tomotexture-get-pip.py
 fi
 
 echo "Installing dependencies into .venv..."
