@@ -2,3 +2,6 @@ numpy
 Pillow
 PyYAML
 zstandard
+pyinstxtractor-ng
+certifi
+py2app
