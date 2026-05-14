@@ -1,6 +1,12 @@
 .venv/
 .DS_Store
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
+
+# Old setup.sh artifacts (kept here for users still running legacy scripts)
 TomoTexture1.1.exe
 TomoTexture1.1.exe_extracted/
 app_runtime/
-__pycache__/

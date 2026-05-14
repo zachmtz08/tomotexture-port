@@ -1,12 +1,81 @@
-name: Release
+name: Build & Release
 
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
-  release:
-    runs-on: macos-latest
+  build:
+    runs-on: macos-14
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Run release script
-        run: echo "Running release workflow..."
+      - uses: actions/checkout@v4
+
+      - name: Install Python.org universal2 Python 3.14
+        run: |
+          set -euxo pipefail
+          PYVER=3.14.4
+          curl -fSL -o "/tmp/python-${PYVER}.pkg" \
+            "https://www.python.org/ftp/python/${PYVER}/python-${PYVER}-macos11.pkg"
+          sudo installer -pkg "/tmp/python-${PYVER}.pkg" -target /
+          echo "/Library/Frameworks/Python.framework/Versions/3.14/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Python is universal2
+        run: |
+          which python3.14
+          file "$(which python3.14)"
+          python3.14 -c "import platform, sys; print(sys.version); print(platform.mac_ver())"
+
+      - name: Install build dependencies
+        run: |
+          python3.14 -m pip install --upgrade pip
+          python3.14 -m pip install -r requirements.txt
+
+      - name: Build .app (arm64)
+        # arm64-only because numpy 2.x and recent Pillow stopped publishing
+        # universal2 wheels; a universal2 .app would have a hollow x86_64
+        # slice that crashes on import. Apple Silicon-only is honest.
+        run: |
+          python3.14 setup.py py2app --arch=arm64
+
+      - name: Verify .app
+        run: |
+          test -d dist/TomoTexture.app
+          file dist/TomoTexture.app/Contents/MacOS/TomoTexture
+          # Ad-hoc sign so Gatekeeper doesn't reject the unsigned arm64 binary
+          # outright; the user still has to right-click → Open the first time.
+          codesign --force --deep --sign - dist/TomoTexture.app
+          codesign --verify --deep --strict dist/TomoTexture.app
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Build .dmg
+        run: |
+          create-dmg \
+            --volname "TomoTexture" \
+            --window-size 540 360 \
+            --icon-size 96 \
+            --icon "TomoTexture.app" 130 180 \
+            --hide-extension "TomoTexture.app" \
+            --app-drop-link 410 180 \
+            "TomoTexture.dmg" \
+            "dist/TomoTexture.app"
+
+      - name: Upload artifact (always)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TomoTexture-dmg
+          path: TomoTexture.dmg
+
+      - name: Attach to release (tag pushes only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: TomoTexture.dmg
+          fail_on_unmatched_files: true
+          generate_release_notes: true
