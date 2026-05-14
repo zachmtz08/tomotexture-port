@@ -109,10 +109,10 @@ Python 3.14 is required because the upstream `.pyc` files were compiled against 
 
 ### CI
 
-`.github/workflows/release.yml` builds the universal2 `.app`, packages it into a `.dmg`, and attaches it to the GitHub Release on every `v*` tag push. To cut a release:
+`.github/workflows/release.yml` builds the arm64 `.app`, packages it into a `.dmg`, and attaches it to the GitHub Release on every `v*` tag push. To cut a release:
 
 ```bash
-git tag v1.0.0
+git tag v2.0.0
 git push --tags
 ```
 
