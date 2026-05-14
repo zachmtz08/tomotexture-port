@@ -12,6 +12,7 @@ TomoTexture was built for Windows. This repo packages a thin macOS launcher into
 
 - **macOS 11 or newer** on **Apple Silicon (M1, M2, M3, M4...)**.
 - Intel Macs are not supported — see [For developers](#for-developers) if you want to build a x86_64 version yourself; in practice, running Ryujinx + a Switch save through this tool isn't viable on Intel hardware regardless.
+- **Use Ryujinx Stable, not Canary**, for Tomodachi Life. Recent Canary builds have a MoltenVK crash when taking in-game photos in PhotoStudio that can wipe UGC items you're editing before they autosave. Stable is older and slower to gain features, but doesn't crash.
 
 ## Install
 
